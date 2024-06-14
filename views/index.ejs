@@ -166,7 +166,7 @@
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Home</h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> History Pembelian </a>
+                                class="fas fa-download fa-sm text-white-50"></i> History Tiket </a>
                     </div>
 
                     <!-- Content Row -->
@@ -177,6 +177,21 @@
 
                     <!-- <div class="row">
                     </div> -->
+
+                    <% if (movies.length > 0) { %>
+                        <div class="d-flex justify-content-between" style="flex-wrap: wrap;">
+                            <% movies.map(item => { %>
+                                    <div class="card mb-3" style="width: 18rem;">
+                                        <img src="https://image.tmdb.org/t/p/w500<%= item.backdrop_path %>" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                        <h5 class="card-title"><%= item.title %></h5>
+                                        <p class="card-text"><%= item.release_date %></p>
+                                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#trModal">Pesan Tiket</a>
+                                        </div>
+                                    </div>
+                            <% }) %>
+                        </div>
+                    <% } %>
 
                 </div>
                 <!-- /.container-fluid -->
@@ -225,6 +240,62 @@
         </div>
     </div>
 
+    <!-- Transaction modal -->
+    <!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Launch demo moda
+  </button> -->
+  
+  <!-- Modal -->
+  <div class="modal fade" id="trModal" tabindex="-1" aria-labelledby="trModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="trModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="d-flex" style="width: 100%;">
+                <p>Pembayaran dapat di transfer ke no. rek : <strong>88192371920</strong></p>
+            </div>
+            <div class="p-4">
+                <form>
+                  <div class="form-group">
+                      <label for="exampleFormControlInput1">Nama Lengkap</label>
+                      <input type="email" id="name" name="name" class="form-control" id="exampleFormControlInput1" placeholder="">
+                    </div>
+                  <div class="form-group">
+                      <label for="exampleFormControlInput1">Tiket</label>
+                      <input type="number" id="ticket" name="ticket" value="1" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                    </div>
+                    <input type="hidden" id="movie-id" name="movie-id">
+                  <div class="form-group">
+                      <label for="exampleFormControlInput1">Total Harga</label>
+                      <input type="number" id="total" name="total" class="form-control" id="exampleFormControlInput1" placeholder="" disabled>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="inputGroupFileAddon01">Bukti Bayar</span>
+                        </div>
+                        <div class="custom-file">
+                          <input type="file" class="custom-file-input" id="trProof" name="trProof" aria-describedby="inputGroupFileAddon01" onchange="trProofChange()">
+                          <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                        </div>
+                      </div>
+                </form>
+                <img src="" id="preview-img" width="300" alt="">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="save(1)">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
     <!-- Bootstrap core JavaScript-->
     <script src="../../template/vendor/jquery/jquery.min.js"></script>
     <script src="../../template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -241,6 +312,39 @@
     <!-- Page level custom scripts -->
     <script src="../../template/js/demo/chart-area-demo.js"></script>
     <script src="../../template/js/demo/chart-pie-demo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        const trProofChange = () => {
+            const file = document.getElementById("trProof").files[0]
+            console.log(file)
+            const fileRead = new FileReader()
+            fileRead.onloadend = () => {
+                let trProofImg = fileRead.result
+                document.getElementById("preview-img").setAttribute('src', trProofImg)
+                return trProofImg
+            }
+            fileRead.readAsDataURL(file)
+        }
+        const save = (id) => {
+            const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+            });
+            Toast.fire({
+            icon: "success",
+            title: "payment success!"
+            });
+        }
+    </script>
+    <!-- <script src="../api.js"></script> -->
 
 </body>
 
