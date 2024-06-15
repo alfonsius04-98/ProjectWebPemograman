@@ -84,13 +84,13 @@
                     <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
+                            <input type="text" id="searchMovie" class="form-control bg-light border-0 small" placeholder="Search for..."
+                                aria-label="Search" aria-describedby="basic-addon2" onkeyup="searchMovie()">
+                            <!-- <div class="input-group-append">
                                 <button class="btn btn-primary" type="button">
                                     <i class="fas fa-search fa-sm"></i>
                                 </button>
-                            </div>
+                            </div> -->
                         </div>
                     </form>
 
@@ -165,13 +165,120 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Home</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#historyModal"><i
                                 class="fas fa-download fa-sm text-white-50"></i> History Pembelian </a>
                     </div>
 
                     <!-- Content Row -->
                     <!-- <div class="row">
                     </div> -->
+                    <div class="row d-flex justify-content-between">
+                        <% if(data) { %> 
+                            <% data.forEach(item => { %>
+                                <div class="card mb-3" style="width: 18rem;">
+                                    <img src="https://image.tmdb.org/t/p/w500<%= item.poster_path %>" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                      <h5 class="card-title"><%= item.title %></h5>
+                                      <p class="card-text"><strong>Release Date :</strong> <%= item.release_date %></p>
+                                      <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#trModal">Pesan Tiket</a>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        <% } %> 
+                    </div>
+
+                    <!-- Modal pembelian tiket -->
+                    <div class="modal fade" id="trModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Pembayaran dapat dilakukan dengan transfer ke no. rek : <strong>3123741891123</strong></p>
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="name">Nama Lengkap</label>
+                                            <input type="text" class="form-control" id="name" name="name" aria-describedby="name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="ticket">Jumlah Tiket</label>
+                                            <input type="number" class="form-control" id="ticket" name="ticket" aria-describedby="ticket" onchange="hargaTiket()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="total">Total harga</label>
+                                            <input type="number" class="form-control" id="total" name="total" aria-describedby="total" disabled>
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="trProof" name="trProof" onchange="uploadPembayaran()">
+                                            <label class="custom-file-label" for="customFile">Bukti Pembayaran</label>
+                                        </div>
+
+                                        <div class="mt-3">
+                                            <img src="" alt="" width="300" id="preview-img">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal history pembelian -->
+                    <div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">First</th>
+                                        <th scope="col">Last</th>
+                                        <th scope="col">Handle</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <th scope="row">1</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                      </tr>
+                                      <tr>
+                                        <th scope="row">2</th>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>@fat</td>
+                                      </tr>
+                                      <tr>
+                                        <th scope="row">3</th>
+                                        <td>Larry</td>
+                                        <td>the Bird</td>
+                                        <td>@twitter</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                              <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
 
                     <!-- Content Row -->
 
@@ -241,6 +348,50 @@
     <!-- Page level custom scripts -->
     <script src="../../template/js/demo/chart-area-demo.js"></script>
     <script src="../../template/js/demo/chart-pie-demo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const uploadPembayaran = () => {
+            const buktiBayar = document.getElementById("trProof").files[0]
+            const reader = new FileReader()
+            reader.onloadend = () => {
+                let img = reader.result
+                document.getElementById("preview-img").setAttribute("src", img)
+            }
+            reader.readAsDataURL(buktiBayar)
+        }
+
+        const hargaTiket = () => {
+            const harga = 35000
+            let jumlahTiket = document.getElementById("ticket").value
+            let totalHarga = document.getElementById("total")
+            if (jumlahTiket < 1 || jumlahTiket > 21) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                    });
+                    Toast.fire({
+                    icon: "error",
+                    title: "Jumlah tiket tidak valid!"
+                });
+
+                totalHarga.value = null
+            } else {
+                totalHarga.value = harga * jumlahTiket
+            }
+        }
+    
+        const filterMovie = () => {
+            
+        }
+        filterMovie()
+    </script>
 
 </body>
 
