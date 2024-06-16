@@ -10,6 +10,16 @@ exports.order = async (req, res) => {
         }
         res.redirect('/list-order')
     } catch (error) {
+        console.log(error)
+        res.redirect('/')
+    }
+}
+exports.listOrder = async (req, res) => {
+    try {
+        const data = await movie.listOrder()
+        res.render('history', { title: "History", data })
+    } catch (error) {
+        console.log(error)
         res.redirect('/')
     }
 }

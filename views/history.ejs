@@ -165,14 +165,46 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Home</h1>
-                        <a href="/list-order" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                        <a href="/list-order" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#historyModal"><i
                                 class="fas fa-download fa-sm text-white-50"></i> History Pembelian </a>
                     </div>
 
                     <!-- Content Row -->
-                    <!-- <div class="row">
-                    </div> -->
-                    <div class="row d-flex justify-content-between">
+                    <div class="row">
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Film</th>
+                                <th scope="col">Waktu</th>
+                                <th scope="col">Tempat Duduk</th>
+                                <th scope="col">Tiket</th>
+                                <th scope="col">Harga</th>
+                                <th scope="col">Tanggal Pemesanan</th>
+                                <th scope="col">Option</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <% if(data && data.length > 0) { %> 
+                                    <% data.forEach(item => { %>
+                                        <tr>
+                                          <th scope="row"></th>
+                                          <td><%= item.movie_name %></td>
+                                          <td><%= item.watch_at %></td>
+                                          <td><%= item.seat %></td>
+                                          <td><%= item.ticket %></td>
+                                          <td><%= item.price %></td>
+                                          <td><%= item.created_at %></td>
+                                          <td>
+                                            <button class="btn btn-md btn-danger">Cancel</button>
+                                          </td>
+                                        </tr>
+                                    <% }) %>
+                                <% } %> 
+                            </tbody>
+                          </table>
+                    </div>
+                    <!-- <div class="row d-flex justify-content-between">
                         <% if(data) { %> 
                             <% data.forEach(item => { %>
                                 <div class="card mb-3" style="width: 18rem;">
@@ -185,7 +217,7 @@
                                 </div>
                             <% }) %>
                         <% } %> 
-                    </div>
+                    </div> -->
 
                     <!-- Modal pembelian tiket -->
                     <div class="modal fade" id="trModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -240,54 +272,6 @@
                     </div>
 
                     <!-- Modal history pembelian -->
-                    <div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                                <table class="table">
-                                    <thead>
-                                      <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">First</th>
-                                        <th scope="col">Last</th>
-                                        <th scope="col">Handle</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                      </tr>
-                                      <tr>
-                                        <th scope="row">2</th>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
-                                      </tr>
-                                      <tr>
-                                        <th scope="row">3</th>
-                                        <td>Larry</td>
-                                        <td>the Bird</td>
-                                        <td>@twitter</td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-primary">Save changes</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
 
                     <!-- Content Row -->
 

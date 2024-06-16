@@ -10,8 +10,6 @@ router.get('/', async (req, res, next) => {
 });
 
 router.post('/order', movie.order)
-router.get('/list-order', async (req, res, next) => [
-  res.render('history', { title: 'History' })
-])
+router.get('/list-order', movie.listOrder)
 
 module.exports = router;

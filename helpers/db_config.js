@@ -14,3 +14,5 @@ connection.connect((error) => {
         console.log("Behasil terhubung!")
     }
 })
+
+module.exports = connection
