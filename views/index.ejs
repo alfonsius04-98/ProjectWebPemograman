@@ -180,7 +180,7 @@
                                     <div class="card-body">
                                       <h5 class="card-title"><%= item.title %></h5>
                                       <p class="card-text"><strong>Release Date :</strong> <%= item.release_date %></p>
-                                      <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#trModal">Pesan Tiket</a>
+                                      <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#trModal" onclick="orderTicket('<%= item.title %>')">Pesan Tiket</a>
                                     </div>
                                 </div>
                             <% }) %>
@@ -197,35 +197,44 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                                 </div>
+                                <form action="/order" method="post">
                                 <div class="modal-body">
                                     <p>Pembayaran dapat dilakukan dengan transfer ke no. rek : <strong>3123741891123</strong></p>
-                                    <form>
                                         <div class="form-group">
-                                            <label for="name">Nama Lengkap</label>
-                                            <input type="text" class="form-control" id="name" name="name" aria-describedby="name">
+                                            <!-- <label for="name">Judul film</label> -->
+                                            <input type="hidden" class="form-control" id="movie_name" name="movie_name" aria-describedby="name">
                                         </div>
                                         <div class="form-group">
                                             <label for="ticket">Jumlah Tiket</label>
                                             <input type="number" class="form-control" id="ticket" name="ticket" aria-describedby="ticket" onchange="hargaTiket()">
                                         </div>
                                         <div class="form-group">
+                                            <label for="ticket">Tempat Duduk</label>
+                                            <input type="text" class="form-control" id="seat" name="seat" aria-describedby="seat">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="time">Pukul</label>
+                                            <input type="time" class="form-control" id="watch_at" name="watch_at" aria-describedby="watch_at">
+                                        </div>
+                                        <div class="form-group">
                                             <label for="total">Total harga</label>
-                                            <input type="number" class="form-control" id="total" name="total" aria-describedby="total" disabled>
+                                            <p id="total-harga"></p>
+                                            <input type="hidden" class="form-control" id="total" name="total" value="" aria-describedby="total">
                                         </div>
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="trProof" name="trProof" onchange="uploadPembayaran()">
+                                            <input type="file" class="custom-file-input" id="payment_proof" name="payment_proof" onchange="uploadPembayaran()">
                                             <label class="custom-file-label" for="customFile">Bukti Pembayaran</label>
                                         </div>
 
                                         <div class="mt-3">
                                             <img src="" alt="" width="300" id="preview-img">
                                         </div>
-                                    </form>
-                                </div>
+                                    </div>
                                 <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
+                                    <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
                                 </div>
+                            </form>
                             </div>
                         </div>
                     </div>
@@ -351,11 +360,13 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         const uploadPembayaran = () => {
-            const buktiBayar = document.getElementById("trProof").files[0]
+            const buktiBayar = document.getElementById("payment_proof").files[0]
+            const urlBuktiBayar = document.getElementById("payment_proof")
             const reader = new FileReader()
             reader.onloadend = () => {
                 let img = reader.result
                 document.getElementById("preview-img").setAttribute("src", img)
+                urlBuktiBayar.value = img
             }
             reader.readAsDataURL(buktiBayar)
         }
@@ -364,6 +375,7 @@
             const harga = 35000
             let jumlahTiket = document.getElementById("ticket").value
             let totalHarga = document.getElementById("total")
+            let viewTotal = document.getElementById("total-harga")
             if (jumlahTiket < 1 || jumlahTiket > 21) {
                 const Toast = Swal.mixin({
                     toast: true,
@@ -382,15 +394,17 @@
                 });
 
                 totalHarga.value = null
+                viewTotal.innerText = '-'
             } else {
                 totalHarga.value = harga * jumlahTiket
+                // viewTotal.innerHTML = '<strong>' + harga * jumlahTiket + '</strong>'
+                viewTotal.innerHTML = `<strong>${harga * jumlahTiket}</strong>`
             }
         }
     
-        const filterMovie = () => {
-            
+        const orderTicket = (title) => {
+            document.getElementById("movie_name").value = title
         }
-        filterMovie()
     </script>
 
 </body>
