@@ -58,9 +58,9 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+                <a class="nav-link" href="/">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Test</span></a>
+                    <span>Home</span></a>
             </li>
 
         </ul>
@@ -125,13 +125,15 @@
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
+                            <a href="/users/login-page">login</a>
+                        </li>
+                        <!-- <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">John Doe</span>
                                 <img class="img-profile rounded-circle"
                                     src="../../template/img/undraw_profile.svg">
                             </a>
-                            <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="#">
@@ -146,13 +148,8 @@
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Activity Log
                                 </a>
-                                <!-- <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a> -->
                             </div>
-                        </li>
+                        </li> -->
 
                     </ul>
 
@@ -165,7 +162,7 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Home</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#historyModal"><i
+                        <a href="/list-order" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> History Pembelian </a>
                     </div>
 
@@ -180,7 +177,7 @@
                                     <div class="card-body">
                                       <h5 class="card-title"><%= item.title %></h5>
                                       <p class="card-text"><strong>Release Date :</strong> <%= item.release_date %></p>
-                                      <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#trModal">Pesan Tiket</a>
+                                      <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#trModal" onclick="startOrder('<%= item.title %>')">Pesan Tiket</a>
                                     </div>
                                 </div>
                             <% }) %>
@@ -197,9 +194,10 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                                 </div>
-                                <div class="modal-body">
+                                <form action="/order" method="post">
+                                    <div class="modal-body">
                                     <p>Pembayaran dapat dilakukan dengan transfer ke no. rek : <strong>3123741891123</strong></p>
-                                    <form>
+                                        <input type="hidden" id="movie_name" name="movie_name" value="">
                                         <div class="form-group">
                                             <label for="name">Nama Lengkap</label>
                                             <input type="text" class="form-control" id="name" name="name" aria-describedby="name">
@@ -209,8 +207,17 @@
                                             <input type="number" class="form-control" id="ticket" name="ticket" aria-describedby="ticket" onchange="hargaTiket()">
                                         </div>
                                         <div class="form-group">
+                                            <label for="ticket">Pukul</label>
+                                            <input type="time" class="form-control" id="watch_at" name="watch_at" aria-describedby="ticket" onchange="hargaTiket()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="ticket">Tempat Duduk</label>
+                                            <input type="text" class="form-control" id="seat" name="seat" aria-describedby="ticket" onchange="hargaTiket()">
+                                        </div>
+                                        <div class="form-group">
                                             <label for="total">Total harga</label>
-                                            <input type="number" class="form-control" id="total" name="total" aria-describedby="total" disabled>
+                                            <p id="price"></p>
+                                            <input type="hidden" class="form-control" id="total" name="total" value="" aria-describedby="total">
                                         </div>
                                         <div class="custom-file">
                                             <input type="file" class="custom-file-input" id="trProof" name="trProof" onchange="uploadPembayaran()">
@@ -220,12 +227,12 @@
                                         <div class="mt-3">
                                             <img src="" alt="" width="300" id="preview-img">
                                         </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
-                                </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" name="submit" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -245,9 +252,13 @@
                                     <thead>
                                       <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">First</th>
-                                        <th scope="col">Last</th>
-                                        <th scope="col">Handle</th>
+                                        <th scope="col">Film</th>
+                                        <th scope="col">Seat</th>
+                                        <th scope="col">Waktu</th>
+                                        <th scope="col">Tiket</th>
+                                        <th scope="col">Harga</th>
+                                        <th scope="col">Tanggal Pemesanan</th>
+                                        <th scope="col">Opsi</th>
                                       </tr>
                                     </thead>
                                     <tbody>
@@ -256,18 +267,10 @@
                                         <td>Mark</td>
                                         <td>Otto</td>
                                         <td>@mdo</td>
-                                      </tr>
-                                      <tr>
-                                        <th scope="row">2</th>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
-                                      </tr>
-                                      <tr>
-                                        <th scope="row">3</th>
-                                        <td>Larry</td>
-                                        <td>the Bird</td>
-                                        <td>@twitter</td>
+                                        <td>@mdo</td>
+                                        <td>@mdo</td>
+                                        <td>@mdo</td>
+                                        <td>@mdo</td>
                                       </tr>
                                     </tbody>
                                   </table>
@@ -356,6 +359,7 @@
             reader.onloadend = () => {
                 let img = reader.result
                 document.getElementById("preview-img").setAttribute("src", img)
+                // document.getElementById("trProof").value = img
             }
             reader.readAsDataURL(buktiBayar)
         }
@@ -363,6 +367,7 @@
         const hargaTiket = () => {
             const harga = 35000
             let jumlahTiket = document.getElementById("ticket").value
+            let totalHargashow = document.getElementById("price")
             let totalHarga = document.getElementById("total")
             if (jumlahTiket < 1 || jumlahTiket > 21) {
                 const Toast = Swal.mixin({
@@ -380,17 +385,22 @@
                     icon: "error",
                     title: "Jumlah tiket tidak valid!"
                 });
-
+                totalHargashow.innerText = '-'
                 totalHarga.value = null
             } else {
+                totalHargashow.innerText = harga * jumlahTiket
                 totalHarga.value = harga * jumlahTiket
             }
         }
     
-        const filterMovie = () => {
-            
+        const startOrder = (title) => {
+            document.getElementById("movie_name").value = title
         }
-        filterMovie()
+
+        // const saveOrder = () => {
+
+        // }
+        
     </script>
 
 </body>
