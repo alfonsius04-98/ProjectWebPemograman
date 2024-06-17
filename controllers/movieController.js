@@ -23,3 +23,16 @@ exports.listOrder = async (req, res) => {
         res.redirect('/')
     }
 }
+exports.updateOrder = async (req, res) => {
+    try {
+        console.log(req.body.id)
+        const data = await movie.update(req.body.id)
+        console.log(data)
+        if (data.affectedRows > 0) {
+            res.redirect('/list-order')
+        }
+    } catch (error) {
+        console.log(error)
+        res.redirect('/')
+    }
+}
