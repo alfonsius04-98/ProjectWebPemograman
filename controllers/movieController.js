@@ -16,8 +16,12 @@ exports.order = async (req, res) => {
 }
 exports.listOrder = async (req, res) => {
     try {
+        let user = null
+        if (req.session && req.session.user) {
+            user = req.session.user
+        }
         const data = await movie.listOrder()
-        res.render('history', { title: "History", data })
+        res.render('history', { title: "History", data, user})
     } catch (error) {
         console.log(error)
         res.redirect('/')

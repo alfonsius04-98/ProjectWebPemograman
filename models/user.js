@@ -16,7 +16,7 @@ exports.register = async (username, email, password) => {
 
 exports.login = async (email, password) => {
     return new Promise((resolve, reject) => {
-        let queries = `SELECT COUNT(*) as jumlah, * FROM users WHERE email = '${email}' AND password = '${password}'`
+        let queries = `SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`
         
         db.query(queries, (err, result) => {
             if (err) {

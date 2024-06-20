@@ -16,7 +16,18 @@ exports.login = async (req, res) => {
     try {
         const { email, password } = req.body
         const data = await user.login(email, password)
+        req.session.user = data[0]
         console.log('Data from DB:', data); // Log data to ensure it's correct
+        res.redirect('/')
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        res.redirect('/login');
+    }
+}
+
+exports.logout = async (req, res) => {
+    try {
+        req.session.user = null
         res.redirect('/')
     } catch (error) {
         console.error('Error fetching data:', error);
